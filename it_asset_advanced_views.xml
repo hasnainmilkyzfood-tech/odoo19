@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="it_asset_form_advanced" model="ir.ui.view">
+        <field name="name">it.asset.form.advanced</field>
+        <field name="model">it.asset</field>
+        <field name="inherit_id" ref="it_management.view_it_asset_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <notebook>
+                    <page string="Asset Details" name="advanced_asset_details">
+                        <group>
+                            <group>
+                                <field name="asset_tag"/>
+                                <field name="serial_number"/>
+                                <field name="lifecycle_state"/>
+                                <field name="physical_location"/>
+                            </group>
+                            <group>
+                                <field name="hostname"/>
+                                <field name="ip_address"/>
+                                <field name="mac_address"/>
+                                <field name="operating_system"/>
+                            </group>
+                        </group>
+                        <group string="Purchase &amp; Warranty">
+                            <field name="asset_currency_id" invisible="1"/>
+                            <field name="purchase_date"/>
+                            <field name="acquisition_cost"/>
+                            <field name="warranty_expiry"/>
+                            <field name="purchase_order_id"/>
+                            <field name="vendor_bill_id"/>
+                        </group>
+                        <group string="Assignment Control">
+                            <field name="assigned_date"/>
+                            <field name="returned_date"/>
+                            <field name="custodian_id"/>
+                        </group>
+                    </page>
+                    <page string="Accounting" name="it_asset_accounting">
+                        <group>
+                            <group>
+                                <field name="expense_account_id"/>
+                                <field name="journal_id"/>
+                                <field name="analytic_account_id"/>
+                            </group>
+                            <group string="Cost Summary">
+                                <field name="purchase_cost"/>
+                                <field name="actual_parts_cost" readonly="1"/>
+                                <field name="lifetime_cost" readonly="1"/>
+                            </group>
+                        </group>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+</odoo>

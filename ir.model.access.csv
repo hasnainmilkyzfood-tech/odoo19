@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_it_asset_user,it.asset.user,model_it_asset,base.group_user,1,1,1,1
+access_it_ticket_user,it.ticket.user,model_it_ticket,base.group_user,1,1,1,1
+access_it_ticket_part_line_user,it.ticket.part.line.user,model_it_ticket_part_line,base.group_user,1,1,1,1
+access_it_support_chat_user,it.support.chat.user,model_it_support_chat,base.group_user,1,1,1,1
+access_it_access_request_user,it.access.request.user,model_it_access_request,base.group_user,1,1,1,1
+access_it_notification_user,it.notification.user,model_it_notification,base.group_user,1,1,1,1
+access_it_maintenance_user,it.maintenance.user,model_it_maintenance,base.group_user,1,1,1,1
+access_it_department_cost_report_user,it.department.cost.report.user,model_it_department_cost_report,base.group_user,1,0,0,0
+access_department_cost_report_wizard_user,department.cost.report.wizard.user,model_department_cost_report_wizard,base.group_user,1,1,1,1

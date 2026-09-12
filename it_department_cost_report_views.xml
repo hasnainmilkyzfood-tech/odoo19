@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_it_department_cost_report_search" model="ir.ui.view">
+        <field name="name">it.department.cost.report.search</field>
+        <field name="model">it.department.cost.report</field>
+        <field name="arch" type="xml">
+            <search string="IT Department Cost Report">
+                <field name="department_id"/>
+                <field name="employee_id"/>
+                <field name="asset_id"/>
+                <filter string="Tickets" name="filter_ticket" domain="[('source_type','=','ticket')]"/>
+                <filter string="Maintenance" name="filter_maintenance" domain="[('source_type','=','maintenance')]"/>
+                <separator/>
+                <filter string="Not Charged" name="filter_not_charged" domain="[('charge_state','=','not_charged')]"/>
+                <filter string="Charged" name="filter_charged" domain="[('charge_state','=','charged')]"/>
+                <separator/>
+                <filter string="Date" name="filter_date" date="cost_date"/>
+                <group expand="1" string="Group By">
+                    <filter string="Department" name="group_department" context="{'group_by':'department_id'}"/>
+                    <filter string="Employee" name="group_employee" context="{'group_by':'employee_id'}"/>
+                    <filter string="Source" name="group_source" context="{'group_by':'source_type'}"/>
+                    <filter string="Charge Status" name="group_charge" context="{'group_by':'charge_state'}"/>
+                    <filter string="Date" name="group_date" context="{'group_by':'cost_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_it_department_cost_report_pivot" model="ir.ui.view">
+        <field name="name">it.department.cost.report.pivot</field>
+        <field name="model">it.department.cost.report</field>
+        <field name="arch" type="xml">
+            <pivot string="IT Cost by Department" display_quantity="true">
+                <field name="department_id" type="row"/>
+                <field name="source_type" type="col"/>
+                <field name="amount" type="measure"/>
+                <field name="record_count" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_it_department_cost_report_graph" model="ir.ui.view">
+        <field name="name">it.department.cost.report.graph</field>
+        <field name="model">it.department.cost.report</field>
+        <field name="arch" type="xml">
+            <graph string="IT Cost by Department" type="bar">
+                <field name="department_id"/>
+                <field name="amount" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_it_department_cost_report_list" model="ir.ui.view">
+        <field name="name">it.department.cost.report.list</field>
+        <field name="model">it.department.cost.report</field>
+        <field name="arch" type="xml">
+            <list string="IT Costs" create="false" edit="false">
+                <field name="cost_date"/>
+                <field name="department_id"/>
+                <field name="employee_id"/>
+                <field name="asset_id"/>
+                <field name="source_type"/>
+                <field name="ticket_id"/>
+                <field name="maintenance_id"/>
+                <field name="amount" sum="Total"/>
+                <field name="charge_state"/>
+                <field name="currency_id" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_it_department_cost_report" model="ir.actions.act_window">
+        <field name="name">IT Department Cost Report</field>
+        <field name="res_model">it.department.cost.report</field>
+        <field name="view_mode">pivot,graph,list</field>
+        <field name="search_view_id" ref="view_it_department_cost_report_search"/>
+    </record>
+
+</odoo>

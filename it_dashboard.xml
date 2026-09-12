@@ -1,0 +1,124 @@
+
+    <templates xml:space="preserve">
+        <t t-name="it_management.ITManagementDashboard">
+            <div class="o_itm_dashboard">
+                <aside class="o_itm_sidebar">
+                    <div class="o_itm_brand">
+                        <div class="o_itm_brand_icon">IT</div>
+                        <div><strong>IT Command Center</strong><small>Service Desk &amp; Remote Support</small></div>
+                    </div>
+
+                    <div class="o_itm_nav_title">OVERVIEW</div>
+                    <button class="o_itm_nav active" t-on-click="() => this.openAction('it_management.action_it_dashboard')"><span>◫</span> Dashboard</button>
+
+                    <div class="o_itm_nav_title">HELP DESK</div>
+                    <button class="o_itm_nav" t-on-click="() => this.openAction('it_management.action_it_ticket')"><span>☷</span> All Tickets</button>
+                    <button class="o_itm_nav" t-on-click="() => this.openAction('it_management.action_it_ticket_create')"><span>＋</span> Create Ticket</button>
+                    <button class="o_itm_nav" t-on-click="() => this.openAction('it_management.action_it_support_chat')"><span>◌</span> Support Chat</button>
+
+                    <div class="o_itm_nav_title">ACCESS &amp; ASSETS</div>
+                    <button class="o_itm_nav" t-on-click="() => this.openAction('it_management.action_it_access_request')"><span>⌁</span> Access Requests</button>
+                    <button class="o_itm_nav" t-on-click="() => this.openAction('it_management.action_it_asset')"><span>▣</span> IT Assets</button>
+
+                    <div class="o_itm_nav_title">IT INVENTORY</div>
+                    <button class="o_itm_nav" t-on-click="() => this.openAction('it_management.action_it_stock_parts')"><span>▦</span> Parts Stock</button>
+                    <button class="o_itm_nav" t-on-click="() => this.openAction('it_management.action_it_parts_consumption')"><span>↘</span> Parts Consumption</button>
+                    <button class="o_itm_nav" t-on-click="() => this.openAction('it_management.action_it_inventory_transfers')"><span>⇄</span> Parts Transfers</button>
+                    <button class="o_itm_nav" t-on-click="() => this.openAction('it_management.action_it_purchase_orders')"><span>🛒</span> Purchase Orders</button>
+
+                    <div class="o_itm_nav_title">REPORTS</div>
+                    <button class="o_itm_nav" t-on-click="() => this.openAction('it_management.action_it_stock_report')"><span>▤</span> Stock Report</button>
+
+                    <div class="o_itm_nav_title">CONFIGURATION</div>
+                    <button class="o_itm_nav" t-on-click="() => this.openAction('it_management.action_it_settings')"><span>⚙</span> Settings</button>
+
+                    <div class="o_itm_nav_title">MY ACCOUNT</div>
+                    <button class="o_itm_nav" t-on-click="() => this.openAction('it_management.action_it_notification')"><span>◉</span> Notifications</button>
+                </aside>
+
+                <main class="o_itm_main">
+                    <div class="o_itm_header">
+                        <div>
+                            <div class="o_itm_eyebrow">SERVICE OPERATIONS</div>
+                            <h1>IT Support Dashboard</h1>
+                            <p>Live workload, remote-support details and user verification status</p>
+                        </div>
+                        <div class="o_itm_header_actions">
+                            <button class="btn btn-light" t-on-click="() => this.openAction('it_management.action_it_support_chat_create')">Support Chat</button>
+                            <button class="btn btn-primary" t-on-click="() => this.openAction('it_management.action_it_ticket_create')">+ New Ticket</button>
+                        </div>
+                    </div>
+
+                    <div class="o_itm_cards">
+                        <div class="o_itm_card"><div class="metric_icon blue">01</div><span>Open / Active</span><strong t-esc="state.open"/><small>currently being worked</small></div>
+                        <div class="o_itm_card danger"><div class="metric_icon red">!</div><span>High / Critical</span><strong t-esc="state.high"/><small>need immediate attention</small></div>
+                        <div class="o_itm_card warning"><div class="metric_icon amber">✓?</div><span>Awaiting User</span><strong t-esc="state.waiting"/><small>two-way verification pending</small></div>
+                        <div class="o_itm_card success"><div class="metric_icon green">✓</div><span>Closed</span><strong t-esc="state.closed"/><small t-esc="closeRate + '% of all tickets'"/></div>
+                    </div>
+
+                    <div class="o_itm_grid">
+                        <section class="o_itm_panel o_itm_trend">
+                            <div class="o_itm_panel_head"><div><h3>7-Day Ticket Trend</h3><p>New tickets created each day</p></div><b t-esc="state.total + ' total'"/></div>
+                            <div class="o_itm_chart">
+                                <t t-foreach="state.trend" t-as="value" t-key="value_index">
+                                    <div class="o_itm_bar_wrap">
+                                        <span class="o_itm_value" t-esc="value"/>
+                                        <div class="o_itm_bar" t-att-style="'height:' + Math.max(8, (value / maxTrend) * 150) + 'px'"/>
+                                        <small t-esc="['D-6','D-5','D-4','D-3','D-2','Yesterday','Today'][value_index]"/>
+                                    </div>
+                                </t>
+                            </div>
+                        </section>
+
+                        <section class="o_itm_panel">
+                            <div class="o_itm_panel_head"><div><h3>Service Health</h3><p>Live operational queue</p></div><span class="o_itm_live"><i/> Live</span></div>
+                            <div class="o_itm_health_row"><span>Open Tickets</span><b t-esc="state.open"/></div>
+                            <div class="o_itm_health_row"><span>Open Support Chats</span><b t-esc="state.chats"/></div>
+                            <div class="o_itm_health_row"><span>Remote Support Requested</span><b t-esc="state.remote"/></div>
+                            <div class="o_itm_health_row"><span>Pending Access Requests</span><b t-esc="state.access"/></div>
+                        </section>
+                    </div>
+
+                    <section class="o_itm_panel o_itm_recent">
+                        <div class="o_itm_panel_head">
+                            <div><h3>Recent Support Tickets</h3><p>User IP and AnyDesk are shown here for faster remote troubleshooting</p></div>
+                            <button class="o_itm_link" t-on-click="() => this.openAction('it_management.action_it_ticket')">View all →</button>
+                        </div>
+                        <div class="o_itm_table_wrap">
+                            <table class="o_itm_table">
+                                <thead><tr><th>Ticket</th><th>User</th><th>Issue</th><th>IP Address</th><th>AnyDesk</th><th>Priority</th><th>Status</th><th></th></tr></thead>
+                                <tbody>
+                                    <t t-if="!state.recent.length"><tr><td colspan="8" class="o_itm_empty">No tickets yet.</td></tr></t>
+                                    <t t-foreach="state.recent" t-as="ticket" t-key="ticket.id">
+                                        <tr>
+                                            <td><button class="o_itm_ticket_link" t-on-click="() => this.openTicket(ticket.id)" t-esc="ticket.name"/></td>
+                                            <td t-esc="ticket.employee_id ? ticket.employee_id[1] : '-'"/>
+                                            <td class="o_itm_subject" t-esc="ticket.subject"/>
+                                            <td><code t-esc="ticket.source_ip || '-'"/></td>
+                                            <td>
+                                                <t t-if="ticket.anydesk_id"><button class="o_itm_anydesk" t-on-click="() => this.connectAnyDesk(ticket.anydesk_id)">Connect <span t-esc="ticket.anydesk_id"/></button></t>
+                                                <t t-else=""><span class="muted">Not provided</span></t>
+                                            </td>
+                                            <td><span t-att-class="'o_itm_badge priority-' + ticket.priority" t-esc="priorityLabel(ticket.priority)"/></td>
+                                            <td><span t-att-class="'o_itm_badge state-' + ticket.state" t-esc="stateLabel(ticket.state)"/></td>
+                                            <td><button class="o_itm_open" t-on-click="() => this.openTicket(ticket.id)">Open</button></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <section class="o_itm_panel o_itm_quick">
+                        <div class="o_itm_panel_head"><div><h3>Quick Actions</h3><p>Common IT service tasks</p></div></div>
+                        <div class="o_itm_quick_grid">
+                            <button t-on-click="() => this.openAction('it_management.action_it_ticket_create')"><b>Create Ticket</b><span>Capture issue, IP and AnyDesk</span></button>
+                            <button t-on-click="() => this.openAction('it_management.action_it_ticket')"><b>User Verification</b><span>Review tickets awaiting confirmation</span></button>
+                            <button t-on-click="() => this.openAction('it_management.action_it_support_chat_create')"><b>Support Chat</b><span>Native Odoo two-way conversation</span></button>
+                            <button t-on-click="() => this.openAction('it_management.action_it_access_request_create')"><b>Access Request</b><span>Request software or system access</span></button>
+                        </div>
+                    </section>
+                </main>
+            </div>
+        </t>
+    </templates>

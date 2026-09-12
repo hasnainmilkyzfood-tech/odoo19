@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_it_ticket_list" model="ir.ui.view">
+        <field name="name">it.ticket.list</field>
+        <field name="model">it.ticket</field>
+        <field name="arch" type="xml">
+            <list string="All Tickets" decoration-danger="priority == '3' and state not in ('resolved','closed','cancelled')" decoration-success="state == 'closed'">
+                <field name="name" string="Ticket"/>
+                <field name="employee_id"/>
+                <field name="subject"/>
+                <field name="source_ip" string="User IP"/>
+                <field name="anydesk_id" string="AnyDesk"/>
+                <field name="priority" widget="priority"/>
+                <field name="state"/>
+                <field name="verification_status"/>
+                <field name="assigned_to_id"/>
+                <field name="opened_date"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_it_ticket_form" model="ir.ui.view">
+        <field name="name">it.ticket.form</field>
+        <field name="model">it.ticket</field>
+        <field name="arch" type="xml">
+            <form string="IT Support Ticket">
+                <header>
+                    <button name="action_start" type="object" string="Start Work" class="btn-primary" invisible="state != 'new'"/>
+                    <button name="action_resolve" type="object" string="Send for User Verification" class="btn-primary" invisible="state not in ('new','progress')"/>
+                    <button name="action_user_confirm_close" type="object" string="Confirm Fixed &amp; Close" class="btn-success" invisible="state != 'waiting' or not can_verify"/>
+                    <button name="action_user_reject_resolution" type="object" string="Not Fixed - Reopen" class="btn-warning" invisible="state != 'waiting' or not can_verify"/>
+                    <button name="action_reopen" type="object" string="Reopen" invisible="state not in ('closed','cancelled')"/>
+                    <button name="action_cancel" type="object" string="Cancel" invisible="state in ('closed','cancelled')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,progress,waiting,closed"/>
+                </header>
+                <sheet>
+                    <field name="can_verify" invisible="1"/>
+                    <div class="oe_title">
+                        <div><field name="name" readonly="1"/></div>
+                        <h1><field name="subject" placeholder="Briefly describe the issue"/></h1>
+                    </div>
+                    <group>
+                        <group string="Request">
+                            <field name="category"/>
+                            <field name="priority" widget="priority"/>
+                            <field name="employee_id"/>
+                            <field name="department_id" readonly="1"/>
+                            <field name="assigned_to_id"/>
+                        </group>
+                        <group string="Remote Support">
+                            <field name="source_ip" readonly="1"/>
+                            <field name="anydesk_id" placeholder="e.g. 123 456 789"/>
+                            <field name="remote_support_requested"/>
+                            <button name="action_open_anydesk" type="object" string="Connect AnyDesk" class="btn-primary" invisible="not anydesk_id"/>
+                            <field name="asset_id"/>
+                            <field name="asset_number"/>
+                        </group>
+                    </group>
+                    <group string="Issue Description">
+                        <field name="description" nolabel="1" placeholder="What happened? Include error messages and steps already tried."/>
+                    </group>
+                    <group string="Resolution" invisible="state in ('new','progress')">
+                        <field name="resolution" nolabel="1" placeholder="IT team: explain what was fixed and what the user should verify."/>
+                    </group>
+                    <group string="Two-Way Verification" invisible="state not in ('waiting','closed')">
+                        <group>
+                            <field name="verification_status" readonly="1"/>
+                            <field name="verified_by_id" readonly="1"/>
+                            <field name="verification_date" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="verification_note" placeholder="User can add a note before confirming or reopening."/>
+                        </group>
+                    </group>
+                    <group string="Attachments">
+                        <field name="attachment_ids" widget="many2many_binary" nolabel="1"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_it_ticket_search" model="ir.ui.view">
+        <field name="name">it.ticket.search</field>
+        <field name="model">it.ticket</field>
+        <field name="arch" type="xml">
+            <search string="Search Tickets">
+                <field name="name"/><field name="subject"/><field name="employee_id"/>
+                <field name="source_ip"/><field name="anydesk_id"/><field name="assigned_to_id"/>
+                <filter string="Open / Active" name="open" domain="[('state','in',('new','progress'))]"/>
+                <filter string="Awaiting User" name="waiting" domain="[('state','=','waiting')]"/>
+                <filter string="High / Critical" name="high" domain="[('priority','in',('2','3'))]"/>
+                <filter string="Closed" name="closed" domain="[('state','=','closed')]"/>
+                <separator/>
+                <filter string="Status" name="group_state" context="{'group_by':'state'}"/>
+                <filter string="Priority" name="group_priority" context="{'group_by':'priority'}"/>
+                <filter string="Department" name="group_department" context="{'group_by':'department_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_it_ticket" model="ir.actions.act_window">
+        <field name="name">All Tickets</field><field name="res_model">it.ticket</field><field name="view_mode">list,form</field><field name="search_view_id" ref="view_it_ticket_search"/>
+    </record>
+    <record id="action_it_ticket_create" model="ir.actions.act_window">
+        <field name="name">Create Ticket</field><field name="res_model">it.ticket</field><field name="view_mode">form</field><field name="target">current</field><field name="context">{'default_state': 'new'}</field>
+    </record>
+</odoo>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_department_form_it_management" model="ir.ui.view">
+        <field name="name">hr.department.form.it.management</field>
+        <field name="model">hr.department</field>
+        <field name="inherit_id" ref="hr.view_department_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group string="IT Cost Charge-back" name="it_management_charge">
+                    <field name="it_analytic_account_id"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_it_management_root" name="IT Management" sequence="35"/>
+    <menuitem id="menu_it_dashboard" name="Dashboard" parent="menu_it_management_root" action="action_it_dashboard" sequence="1"/>
+
+    <menuitem id="menu_it_helpdesk" name="Help Desk" parent="menu_it_management_root" sequence="10"/>
+    <menuitem id="menu_it_tickets" name="All Tickets" parent="menu_it_helpdesk" action="action_it_ticket" sequence="10"/>
+    <menuitem id="menu_it_ticket_create" name="Create Ticket" parent="menu_it_helpdesk" action="action_it_ticket_create" sequence="20"/>
+    <menuitem id="menu_it_support_chat" name="Support Chat" parent="menu_it_helpdesk" action="action_it_support_chat" sequence="30"/>
+
+    <menuitem id="menu_it_access_control" name="Access Control" parent="menu_it_management_root" sequence="20"/>
+    <menuitem id="menu_it_access_requests" name="Access Requests" parent="menu_it_access_control" action="action_it_access_request" sequence="10"/>
+
+    <menuitem id="menu_it_inventory" name="IT Inventory" parent="menu_it_management_root" sequence="30"/>
+    <menuitem id="menu_it_assets" name="Assets" parent="menu_it_inventory" action="action_it_asset" sequence="10"/>
+    <menuitem id="menu_it_parts_stock" name="Parts Stock" parent="menu_it_inventory" action="action_it_stock_parts" sequence="20"/>
+    <menuitem id="menu_it_parts_consumption" name="Parts Consumption" parent="menu_it_inventory" action="action_it_parts_consumption" sequence="30"/>
+    <menuitem id="menu_it_parts_transfers" name="Parts Transfers" parent="menu_it_inventory" action="action_it_inventory_transfers" sequence="40"/>
+    <menuitem id="menu_it_purchase_orders" name="Purchase Orders" parent="menu_it_inventory" action="action_it_purchase_orders" sequence="50"/>
+    <menuitem id="menu_it_maintenance" name="Maintenance" parent="menu_it_inventory" action="action_it_maintenance" sequence="60"/>
+
+    <menuitem id="menu_it_reports" name="Reports" parent="menu_it_management_root" sequence="35"/>
+    <menuitem id="menu_it_stock_report" name="Stock Report" parent="menu_it_reports" action="action_it_stock_report" sequence="10"/>
+    <menuitem id="menu_it_department_cost_report" name="Department Cost Report" parent="menu_it_reports" action="action_department_cost_report_wizard" sequence="20"/>
+
+    <menuitem id="menu_it_configuration" name="Configuration" parent="menu_it_management_root" sequence="90"/>
+    <menuitem id="menu_it_settings" name="Settings" parent="menu_it_configuration" action="action_it_settings" sequence="10"/>
+
+    <menuitem id="menu_it_my_account" name="My Account" parent="menu_it_management_root" sequence="40"/>
+    <menuitem id="menu_it_notifications" name="Notifications" parent="menu_it_my_account" action="action_it_notification" sequence="10"/>
+</odoo>

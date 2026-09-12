@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="it_ticket_form_parts" model="ir.ui.view">
+        <field name="name">it.ticket.form.parts</field>
+        <field name="model">it.ticket</field>
+        <field name="inherit_id" ref="it_management.view_it_ticket_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_consume_parts" type="object" string="Create Draft Parts Transfer" class="btn-primary" invisible="state in ('closed','cancelled')"/>
+                <button name="action_create_draft_po" type="object" string="Create Draft RFQ" invisible="state in ('closed','cancelled')"/>
+            </xpath>
+            <xpath expr="//sheet" position="inside">
+                <div class="oe_button_box" name="button_box_it_parts">
+                    <button name="action_view_parts_transfers" type="object" class="oe_stat_button" icon="fa-exchange" invisible="parts_picking_count == 0">
+                        <field name="parts_picking_count" widget="statinfo" string="Parts Transfers"/>
+                    </button>
+                    <button name="action_view_purchase_orders" type="object" class="oe_stat_button" icon="fa-shopping-cart" invisible="purchase_order_count == 0">
+                        <field name="purchase_order_count" widget="statinfo" string="Purchase Orders"/>
+                    </button>
+                </div>
+            </xpath>
+            <xpath expr="//sheet" position="inside">
+                <notebook>
+                    <page string="Parts &amp; Stock" name="ticket_parts_stock">
+                        <group>
+                            <field name="purchase_vendor_id"/>
+                        </group>
+                        <field name="part_line_ids">
+                            <list editable="bottom">
+                                <field name="product_id"/>
+                                <field name="description"/>
+                                <field name="location_id" optional="show"/>
+                                <field name="quantity"/>
+                                <field name="uom_id"/>
+                                <field name="unit_cost"/>
+                                <field name="subtotal" sum="Parts Cost"/>
+                                <field name="move_state" optional="show"/>
+                                <field name="currency_id" column_invisible="True"/>
+                            </list>
+                        </field>
+                        <group class="oe_subtotal_footer oe_right">
+                            <field name="parts_cost" readonly="1"/>
+                        </group>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="it_ticket_part_line_list" model="ir.ui.view">
+        <field name="name">it.ticket.part.line.list</field>
+        <field name="model">it.ticket.part.line</field>
+        <field name="arch" type="xml">
+            <list create="false">
+                <field name="ticket_number"/>
+                <field name="product_id"/>
+                <field name="location_id"/>
+                <field name="quantity"/>
+                <field name="uom_id"/>
+                <field name="unit_cost"/>
+                <field name="subtotal"/>
+                <field name="move_state"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_it_parts_consumption" model="ir.actions.act_window">
+        <field name="name">Parts Consumption</field><field name="res_model">it.ticket.part.line</field><field name="view_mode">list</field>
+    </record>
+</odoo>

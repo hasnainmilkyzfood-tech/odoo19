@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Ticket: add service cost + charge-back button/fields -->
+    <record id="it_ticket_form_charge" model="ir.ui.view">
+        <field name="name">it.ticket.form.charge</field>
+        <field name="model">it.ticket</field>
+        <field name="inherit_id" ref="it_management.view_it_ticket_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_charge_department" type="object"
+                        string="Charge to Department" class="btn-primary"
+                        invisible="charge_state == 'charged' or total_charge_cost &lt;= 0"/>
+            </xpath>
+            <xpath expr="//sheet" position="inside">
+                <div class="oe_button_box" name="button_box_it_charge">
+                    <button name="action_view_charge_move" type="object"
+                            class="oe_stat_button" icon="fa-book"
+                            invisible="not charge_move_id">
+                        <field name="charge_state" widget="badge"
+                               decoration-success="charge_state == 'charged'"
+                               decoration-muted="charge_state == 'not_charged'"/>
+                    </button>
+                </div>
+            </xpath>
+            <xpath expr="//page[@name='ticket_parts_stock']" position="inside">
+                <group class="oe_subtotal_footer oe_right">
+                    <field name="service_cost"/>
+                    <field name="total_charge_cost" readonly="1"/>
+                    <field name="charge_department_id" readonly="1"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Maintenance: add charge-back button/fields -->
+    <record id="it_maintenance_form_charge" model="ir.ui.view">
+        <field name="name">it.maintenance.form.charge</field>
+        <field name="model">it.maintenance</field>
+        <field name="inherit_id" ref="it_management.view_it_maintenance_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_charge_department" type="object"
+                        string="Charge to Department" class="btn-primary"
+                        invisible="charge_state == 'charged' or not cost or cost &lt;= 0"/>
+            </xpath>
+            <xpath expr="//sheet" position="inside">
+                <div class="oe_button_box" name="button_box_it_maint_charge">
+                    <button name="action_view_charge_move" type="object"
+                            class="oe_stat_button" icon="fa-book"
+                            invisible="not charge_move_id">
+                        <field name="charge_state" widget="badge"
+                               decoration-success="charge_state == 'charged'"
+                               decoration-muted="charge_state == 'not_charged'"/>
+                    </button>
+                </div>
+            </xpath>
+            <xpath expr="//field[@name='vendor_id']" position="after">
+                <field name="department_id" readonly="1"/>
+                <field name="charge_department_id" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

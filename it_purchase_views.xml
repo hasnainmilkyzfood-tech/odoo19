@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="purchase_order_form_it_management" model="ir.ui.view">
+        <field name="name">purchase.order.form.it.management</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='origin']" position="after">
+                <field name="it_ticket_id" readonly="1" invisible="not it_ticket_id"/>
+                <field name="it_asset_id" readonly="1" invisible="not it_asset_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_it_purchase_orders" model="ir.actions.act_window">
+        <field name="name">IT Purchase Orders</field>
+        <field name="res_model">purchase.order</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('it_ticket_id','!=',False)]</field>
+    </record>
+</odoo>

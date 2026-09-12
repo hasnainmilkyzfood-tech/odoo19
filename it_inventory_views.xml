@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_it_stock_parts" model="ir.actions.act_window">
+        <field name="name">Parts Stock</field>
+        <field name="res_model">product.product</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('type','=','consu'),('is_storable','=',True)]</field>
+        <field name="context">{'search_default_filter_to_purchase': 0}</field>
+    </record>
+    <record id="action_it_inventory_transfers" model="ir.actions.act_window">
+        <field name="name">IT Parts Transfers</field>
+        <field name="res_model">stock.picking</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('it_ticket_id','!=',False)]</field>
+    </record>
+</odoo>
